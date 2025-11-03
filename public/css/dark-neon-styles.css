@@ -1,0 +1,382 @@
+/* ============================================
+   DARK NEON STYLES - Sistema de Calificaciones
+   ============================================ */
+
+:root {
+    --neon-cyan: #00d4ff;
+    --neon-blue: #0ea5e9;
+    --dark-bg: #0f172a;
+    --dark-card: #1e293b;
+    --text-color: #e2e8f0;
+    --muted-text: #94a3b8;
+}
+
+/* =============== CARDS =============== */
+.card-dark {
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 15px;
+    overflow: visible;  /* ← NUEVO VALOR */
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
+}
+
+.card-header-dark {
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.2) 0%, rgba(0, 212, 255, 0.1) 100%);
+    border-bottom: 1px solid rgba(0, 212, 255, 0.3);
+    padding: 1.5rem;
+}
+
+.card-header-dark h5 {
+    color: var(--neon-cyan);
+    font-weight: 600;
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+    margin: 0;
+}
+
+.card-body-dark {
+    padding: 2rem;
+}
+
+/* =============== FORM CONTROLS =============== */
+.form-label-dark {
+    color: var(--text-color);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.form-label-dark i {
+    color: var(--neon-cyan);
+}
+
+.form-control-dark {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 10px;
+    color: var(--text-color);
+    padding: 0.75rem 1rem;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.form-control-dark:focus {
+    background: rgba(15, 23, 42, 0.95);
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+    outline: none;
+    color: white;
+}
+
+.form-select-dark {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 10px;
+    color: var(--text-color);
+    padding: 0.75rem 1rem;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.form-select-dark:focus {
+    background: rgba(15, 23, 42, 0.95);
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+    outline: none;
+}
+
+.form-select-dark option {
+    background-color: var(--dark-card);
+    color: var(--text-color);
+}
+
+.form-text-dark {
+    color: var(--muted-text);
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+.invalid-feedback-dark {
+    color: #ef4444;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+.is-invalid {
+    border-color: #ef4444 !important;
+}
+
+/* =============== SECTION HEADERS =============== */
+.section-header {
+    display: flex;
+    align-items: center;
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+}
+
+.section-header i {
+    color: var(--neon-cyan);
+    font-size: 1.25rem;
+}
+
+.section-header h6 {
+    color: var(--text-color);
+    font-weight: 600;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.875rem;
+}
+
+/* =============== ALERTS =============== */
+.alert-info-dark {
+    background: rgba(6, 182, 212, 0.1);
+    border: 1px solid rgba(6, 182, 212, 0.3);
+    border-radius: 10px;
+    color: #06b6d4;
+    padding: 1rem;
+}
+
+.alert-success-dark {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    border-radius: 10px;
+    color: #10b981;
+    padding: 1rem;
+}
+
+.alert-warning-dark {
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: 10px;
+    color: #f59e0b;
+    padding: 1rem;
+}
+
+.alert-danger-dark {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 10px;
+    color: #ef4444;
+    padding: 1rem;
+}
+
+/* =============== BUTTONS =============== */
+.btn-neon {
+    background: linear-gradient(135deg, var(--neon-blue) 0%, var(--neon-cyan) 100%);
+    border: none;
+    color: #0f172a;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-neon:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
+    color: #0f172a;
+}
+
+.btn-neon-lg {
+    background: linear-gradient(135deg, var(--neon-blue) 0%, var(--neon-cyan) 100%);
+    border: none;
+    color: #0f172a;
+    font-weight: 600;
+    padding: 1rem 2.5rem;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+    font-size: 1rem;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-neon-lg:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
+    color: #0f172a;
+}
+
+.btn-outline-neon {
+    background: transparent;
+    border: 2px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-outline-neon:hover {
+    background: rgba(0, 212, 255, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+    color: var(--neon-cyan);
+}
+
+.btn-danger-neon {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 1rem 2.5rem;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.btn-danger-neon:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(239, 68, 68, 0.6);
+}
+
+/* =============== BADGES =============== */
+.badge-neon {
+    background: linear-gradient(135deg, var(--neon-blue) 0%, var(--neon-cyan) 100%);
+    color: #0f172a;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.75rem;
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+    display: inline-block;
+}
+
+/* =============== STATUS BADGES =============== */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.status-pending {
+    background: rgba(245, 158, 11, 0.2);
+    color: #f59e0b;
+    border: 1px solid #f59e0b;
+}
+
+.status-active {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+    border: 1px solid #10b981;
+}
+
+.status-graded {
+    background: rgba(6, 182, 212, 0.2);
+    color: #06b6d4;
+    border: 1px solid #06b6d4;
+}
+
+.status-danger {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    border: 1px solid #ef4444;
+}
+
+.status-inactive {
+    background: rgba(100, 116, 139, 0.2);
+    color: #64748b;
+    border: 1px solid #64748b;
+}
+
+.status-badge i {
+    font-size: 0.5rem;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* =============== TABLES =============== */
+.table-dark {
+    width: 100%;
+    color: var(--text-color);
+}
+
+.table-dark thead th {
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.3) 0%, rgba(0, 212, 255, 0.2) 100%);
+    color: var(--neon-cyan);
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 1rem;
+    border: none;
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+}
+
+.table-dark tbody tr {
+    border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.table-dark tbody tr:hover {
+    background: rgba(0, 212, 255, 0.05);
+}
+
+.table-dark tbody td {
+    padding: 1rem;
+    vertical-align: middle;
+    color: var(--text-color);
+}
+
+/* =============== TEXT UTILITIES =============== */
+.text-muted {
+    color: var(--muted-text) !important;
+}
+
+.text-neon {
+    color: var(--neon-cyan);
+}
+
+/* =============== RESPONSIVE =============== */
+@media (max-width: 768px) {
+    .card-body-dark {
+        padding: 1rem;
+    }
+    
+    .btn-neon-lg,
+    .btn-outline-neon,
+    .btn-danger-neon {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* =============== FIX DROPDOWN =============== */
+/* Forzar espacio para dropdowns nativos */
+.form-select-dark {
+    margin-bottom: 2rem;
+}
+
+#evaluacion_id,
+#estudiante_id {
+    margin-bottom: 20rem !important;
+}
+
+/* Asegurar altura mínima en páginas con selects */
+.card-body-dark {
+    min-height: 100vh;
+    padding-bottom: 30rem;
+}
+
+/* Prevenir que el card corte los dropdowns */
+.card-dark {
+    overflow: visible !important;
+}
