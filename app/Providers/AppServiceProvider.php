@@ -24,6 +24,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Schema::defaultStringLength(191);  // ← AGREGAR ESTA LÍNEA
+        Schema::defaultStringLength(191);
+
+        // Aplicar configuraciones del sistema automáticamente
+        if (Schema::hasTable('configuraciones')) {
+            aplicar_configuraciones_sistema();
+        }
     }
 }

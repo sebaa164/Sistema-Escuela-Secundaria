@@ -68,13 +68,13 @@ class Calificacion extends Model
 
     public function scopeAprobadas($query)
     {
-        $notaMinima = config('app.nota_minima_aprobacion', 70);
+        $notaMinima = config_sistema('nota_minima_aprobacion', 60);
         return $query->where('nota', '>=', $notaMinima);
     }
 
     public function scopeReprobadas($query)
     {
-        $notaMinima = config('app.nota_minima_aprobacion', 70);
+        $notaMinima = config_sistema('nota_minima_aprobacion', 60);
         return $query->where('nota', '<', $notaMinima);
     }
 
@@ -83,7 +83,7 @@ class Calificacion extends Model
     {
         if ($this->nota === null) return null;
 
-        $notaMinima = config('app.nota_minima_aprobacion', 70);
+        $notaMinima = config_sistema('nota_minima_aprobacion', 60);
         $notaNormalizada = $this->nota_sobre_cien;
         return $notaNormalizada !== null ? $notaNormalizada >= $notaMinima : null;
     }

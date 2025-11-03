@@ -73,8 +73,9 @@ class ConfiguracionController extends Controller
 
         Configuracion::create($validated);
 
-        // Limpiar caché
-        Cache::forget('configuraciones');
+        // Limpiar caché y recargar configuraciones
+        actualizar_config_cache();
+        aplicar_configuraciones_sistema();
 
         return redirect()->route('admin.configuraciones.index')
             ->with('success', 'Configuración creada exitosamente');
@@ -116,8 +117,9 @@ class ConfiguracionController extends Controller
 
         $configuracion->update($validated);
 
-        // Limpiar caché
-        Cache::forget('configuraciones');
+        // Limpiar caché y recargar configuraciones
+        actualizar_config_cache();
+        aplicar_configuraciones_sistema();
 
         return redirect()->route('admin.configuraciones.index')
             ->with('success', 'Configuración actualizada exitosamente');
@@ -144,7 +146,7 @@ class ConfiguracionController extends Controller
     {
         // Configuraciones comunes del sistema
         $configuracionesComunes = [
-            'nota_minima_aprobacion' => $this->getConfig('nota_minima_aprobacion', 70),
+            'nota_minima_aprobacion' => $this->getConfig('nota_minima_aprobacion', 60),
             'max_estudiantes_seccion' => $this->getConfig('max_estudiantes_seccion', 30),
             'sistema_nombre' => $this->getConfig('sistema_nombre', 'Sistema de Gestión Académica'),
             'timezone' => $this->getConfig('timezone', 'America/Argentina/San_Juan'),
@@ -212,8 +214,9 @@ class ConfiguracionController extends Controller
 
             DB::commit();
 
-            // Limpiar caché
-            Cache::forget('configuraciones');
+            // Limpiar caché y recargar configuraciones
+            actualizar_config_cache();
+            aplicar_configuraciones_sistema();
 
             Log::info("Configuraciones actualizadas exitosamente. Total: {$actualizados}");
 

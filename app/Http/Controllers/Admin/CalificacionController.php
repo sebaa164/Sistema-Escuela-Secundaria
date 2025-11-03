@@ -619,7 +619,7 @@ public function debugEvaluaciones()
                     ->get();
                 
                 $totalEstudiantes = $inscripciones->count();
-                $notaMinima = config('app.nota_minima_aprobacion', 60);
+                $notaMinima = config_sistema('nota_minima_aprobacion', 60);
                 $aprobados = $inscripciones->filter(fn($i) => $i->nota_final && $i->nota_final >= $notaMinima)->count();
                 $reprobados = $totalEstudiantes - $aprobados;
                 $promedioSeccion = $inscripciones->where('nota_final', '>', 0)->avg('nota_final');

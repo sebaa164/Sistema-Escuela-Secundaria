@@ -499,7 +499,7 @@
             notaPreview.style.display = 'flex';
             
             // Nota mínima de aprobación: 60
-            if (nota >= 60) {
+            const notaMinima = {{ $notaMinima ?? 60 }}; if (nota >= notaMinima) {
                 notaEstado.textContent = 'Aprobado';
                 notaEstado.className = 'preview-value aprobado';
             } else {

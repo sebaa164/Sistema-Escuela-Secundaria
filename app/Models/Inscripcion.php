@@ -110,8 +110,8 @@ class Inscripcion extends Model
     public function getEstaAprobadoAttribute()
     {
         if (!$this->nota_final) return null;
-        
-        $notaMinima = config('app.nota_minima_aprobacion', 70);
+
+        $notaMinima = config_sistema('nota_minima_aprobacion', 60);
         return $this->nota_final >= $notaMinima;
     }
 

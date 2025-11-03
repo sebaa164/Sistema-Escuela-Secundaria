@@ -844,7 +844,7 @@
         if (statusElement) {
             statusElement.style.display = 'block';
             // Nota mínima de aprobación: 60
-            if (nota >= 60) {
+            const notaMinima = {{ $notaMinima ?? 60 }}; if (nota >= notaMinima) {
                 statusElement.textContent = 'Aprobado';
                 statusElement.className = 'nota-status aprobado';
                 input.style.borderColor = '#10b981';

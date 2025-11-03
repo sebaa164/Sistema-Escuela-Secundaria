@@ -546,8 +546,9 @@
         const nota = parseFloat(notaInput.value);
 
         if (!isNaN(nota) && nota >= 0 && nota <= 100) {
-            // Nota mínima de aprobación: 60
-            if (nota >= 60) {
+            // Nota mínima de aprobación dinámica desde configuración
+            const notaMinima = {{ $notaMinima ?? 60 }};
+            if (nota >= notaMinima) {
                 notaEstado.textContent = 'Aprobado';
                 notaEstado.className = 'preview-value aprobado';
             } else {
