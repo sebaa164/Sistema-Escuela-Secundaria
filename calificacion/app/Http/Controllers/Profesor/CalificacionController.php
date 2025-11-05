@@ -351,7 +351,7 @@ class CalificacionController extends Controller
             'calificadas' => $calificaciones->count(),
             'pendientes' => $evaluacion->calificaciones->where('estado', 'pendiente')->count(),
             'promedio' => $calificaciones->avg('nota'),
-            'nota_mayor' => $calificaciones->max('nota'),
+            'nota_mayor' => $calificaciones->max('nota')
         ]);
     }
 
