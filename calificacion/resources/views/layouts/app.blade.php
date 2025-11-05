@@ -22,9 +22,9 @@
             --neon-cyan: #00ffff;
             --sidebar-bg: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             --header-bg: rgba(15, 15, 42, 0.95);
-            --dark-bg: #1a3349ff;
-            --dark-bg-secondary: #1d4a4fff;
-            --dark-bg-tertiary: #425e7aff;
+            --dark-bg: #0a1929; /* Deep petroleum blue */
+            --dark-bg-secondary: #1b263b; /* Medium petroleum */
+            --dark-bg-tertiary: #415a77; /* Light petroleum */
             --transition-duration: 0.4s;
             --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
         }

@@ -299,14 +299,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 @push('styles')
 <style>
-    /* Dracula Theme Colors + Neon Blues */
+    /* Dracula Theme Colors + Neon Blues - Original Style */
     :root {
         --dracula-bg: #1a1c2e;
         --dracula-current: #2d3148;
@@ -327,7 +324,7 @@
         --deep-blue: #0284c7;
     }
 
-    /* Page Header Dark - SUAVIZADO */
+    /* Page Header Dark - Original */
     .page-header-dark {
         background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%);
         border: 1px solid rgba(0, 212, 255, 0.3);
@@ -350,7 +347,7 @@
         text-shadow: 0 0 5px rgba(93, 253, 255, 0.3);
     }
 
-    /* Stats Grid - SUAVIZADO */
+    /* Stats Grid - Original */
     .stats-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -435,7 +432,7 @@
         margin-top: auto;
     }
 
-    /* Card Dark - SUAVIZADO */
+    /* Card Dark - Original */
     .card-dark {
         background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%);
         border: 1px solid rgba(0, 212, 255, 0.3);
@@ -667,7 +664,7 @@
         border-bottom: none;
     }
 
-    /* Quick Access Buttons - MEJORADO */
+    /* Quick Access Buttons - Original */
     .quick-access-btn {
         display: flex;
         flex-direction: column;
