@@ -67,9 +67,9 @@ class Asistencia extends Model
         return $query->where('estado', 'tardanza');
     }
 
-    public function scopeJustificadas($query)
+    public function scopeJustificados($query)
     {
-        return $query->where('estado', 'justificada');
+        return $query->where('estado', 'justificado');
     }
 
     public function scopeDeLaInscripcion($query, $inscripcionId)
@@ -110,9 +110,9 @@ class Asistencia extends Model
         return $this->estado === 'tardanza';
     }
 
-    public function getEsJustificadaAttribute()
+    public function getEsJustificadoAttribute()
     {
-        return $this->estado === 'justificada';
+        return $this->estado === 'justificado';
     }
 
     public function getEstadoBadgeClassAttribute()
@@ -124,7 +124,7 @@ class Asistencia extends Model
                 return 'badge-danger';
             case 'tardanza':
                 return 'badge-warning';
-            case 'justificada':
+            case 'justificado':
                 return 'badge-info';
             default:
                 return 'badge-secondary';
@@ -140,8 +140,8 @@ class Asistencia extends Model
                 return 'Ausente';
             case 'tardanza':
                 return 'Tardanza';
-            case 'justificada':
-                return 'Justificada';
+            case 'justificado':
+                return 'Justificado';
             default:
                 return 'No definido';
         }

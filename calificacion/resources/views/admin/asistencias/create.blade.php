@@ -210,7 +210,7 @@
                                                                         📝 Justificado
                                                                     </option>
                                                                 </select>
-
+                                                                
                                                                 @if($inscripcion->asistencia_existente)
                                                                     <small class="text-warning d-block mt-1">
                                                                         <i class="fas fa-info-circle me-1"></i>Ya registrada

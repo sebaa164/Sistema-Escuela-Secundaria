@@ -19,66 +19,31 @@ class AsistenciaController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Asistencia::with(['inscripcion.estudiante', 'inscripcion.seccion.curso']);
-
-        // Filtro por sección
+        // Si se seleccionó una sección específica, mostrar asistencias detalladas
         if ($request->filled('seccion_id')) {
-            $query->whereHas('inscripcion', function($q) use ($request) {
-                $q->where('seccion_id', $request->seccion_id);
+            return $this->showSeccionAsistencias($request);
+        }
+
+        // Mostrar lista de secciones disponibles
+        // Nota: no es posible usar "orderBy('curso.nombre')" directamente porque 'curso' es una relación.
+        // Hacemos un LEFT JOIN con la tabla 'cursos' para ordenar por su nombre en la consulta SQL.
+        $seccionesQuery = Seccion::with(['curso', 'periodo'])
+            ->where('secciones.estado', 'activo')
+            ->when($request->filled('periodo_id'), function($query) use ($request) {
+                return $query->where('periodo_academico_id', $request->periodo_id);
             });
-        }
 
-        // Filtro por período
-        if ($request->filled('periodo_id')) {
-            $query->whereHas('inscripcion.seccion', function($q) use ($request) {
-                $q->where('periodo_academico_id', $request->periodo_id);
-            });
-        }
+        $secciones = $seccionesQuery
+            ->leftJoin('cursos', 'secciones.curso_id', '=', 'cursos.id')
+            ->select('secciones.*')
+            ->orderBy('cursos.nombre')
+            ->orderBy('secciones.codigo_seccion')
+            ->get();
 
-        // Filtro por estado
-        if ($request->filled('estado')) {
-            $query->where('estado', $request->estado);
-        }
-
-        // Filtro por fecha
-        if ($request->filled('fecha')) {
-            $query->whereDate('fecha', $request->fecha);
-        }
-        
-        // BÚSQUEDA 
-if ($request->filled('search')) {
-    $search = $request->search;
-    
-    $query->whereHas('inscripcion', function($inscripcion) use ($search) {
-        // Buscar en estudiante (nombre, apellido, email)
-        $inscripcion->whereHas('estudiante', function($estudiante) use ($search) {
-            $estudiante->where('nombre', 'like', "%{$search}%")
-                ->orWhere('apellido', 'like', "%{$search}%")
-                ->orWhere('email', 'like', "%{$search}%")
-                ->orWhereRaw("CONCAT(nombre, ' ', apellido) LIKE ?", ["%{$search}%"]);
-        })
-        // Buscar en sección (código de sección)
-        ->orWhereHas('seccion', function($seccion) use ($search) {
-            $seccion->where('codigo_seccion', 'like', "%{$search}%");
-        })
-        // Buscar en curso (nombre y código_curso)
-        ->orWhereHas('seccion.curso', function($curso) use ($search) {
-            $curso->where('nombre', 'like', "%{$search}%")
-                  ->orWhere('codigo_curso', 'like', "%{$search}%");
-        });
-    });
-}
-
-        $asistencias = $query->orderBy('fecha', 'desc')
-                             ->orderBy('created_at', 'desc')
-                             ->paginate(20)
-                             ->withQueryString();
-
-        // Datos para filtros
-        $secciones = Seccion::with('curso')->where('estado', 'activo')->get();
+        // Filtros disponibles
         $periodos = PeriodoAcademico::orderBy('fecha_inicio', 'desc')->get();
 
-        // Estadísticas
+        // Estadísticas globales
         $stats = [
             'total' => Asistencia::count(),
             'presente' => Asistencia::where('estado', 'presente')->count(),
@@ -86,7 +51,78 @@ if ($request->filled('search')) {
             'ausente' => Asistencia::where('estado', 'ausente')->count(),
         ];
 
-        return view('admin.asistencias.index', compact('asistencias', 'secciones', 'periodos', 'stats'));
+        return view('admin.asistencias.index', compact('secciones', 'periodos', 'stats'));
+    }
+
+    private function showSeccionAsistencias(Request $request)
+    {
+        $seccionId = $request->seccion_id;
+        $seccion = Seccion::with(['curso', 'periodo', 'inscripciones.estudiante'])->findOrFail($seccionId);
+
+        // Obtener todas las fechas de asistencia para esta sección
+        $fechasAsistencia = Asistencia::whereHas('inscripcion', function($q) use ($seccionId) {
+            $q->where('seccion_id', $seccionId);
+        })
+        ->selectRaw('DATE(fecha) as fecha')
+        ->distinct()
+        ->orderBy('fecha', 'desc')
+        ->limit(20)
+        ->pluck('fecha')
+        ->map(function($fecha) {
+            return \Carbon\Carbon::parse($fecha);
+        });
+
+        // Obtener estudiantes inscritos en la sección con sus asistencias
+        $estudiantes = $seccion->inscripciones()
+            ->with('estudiante')
+            ->where('estado', 'inscrito')
+            ->get();
+
+        // Obtener todas las asistencias de esta sección para las fechas especificadas
+        // Agrupamos por inscripcion_id y luego mapeamos cada colección a un array fecha => estado
+        $fechasArray = $fechasAsistencia->map(function($fecha) {
+            return $fecha->format('Y-m-d');
+        })->toArray();
+
+        $todasAsistencias = Asistencia::whereHas('inscripcion', function($q) use ($seccionId) {
+            $q->where('seccion_id', $seccionId);
+        })
+        ->whereIn(DB::raw('DATE(fecha)'), $fechasArray)
+        ->get()
+        ->groupBy('inscripcion_id')
+        ->map(function($asistenciasPorInscripcion) {
+            return $asistenciasPorInscripcion->mapWithKeys(function($asistencia) {
+                return [$asistencia->fecha->format('Y-m-d') => $asistencia->estado];
+            });
+        });
+
+        // Asignar asistencias a cada estudiante
+        $estudiantes = $estudiantes->map(function($inscripcion) use ($todasAsistencias) {
+            $inscripcion->asistencias = $todasAsistencias->get($inscripcion->id, collect())->toArray();
+            return $inscripcion;
+        });
+
+        // Filtros disponibles
+        $secciones = Seccion::with('curso')->where('estado', 'activo')->get();
+        $periodos = PeriodoAcademico::orderBy('fecha_inicio', 'desc')->get();
+
+        // Estadísticas de la sección
+        $stats = [
+            'total' => Asistencia::whereHas('inscripcion', function($q) use ($seccionId) {
+                $q->where('seccion_id', $seccionId);
+            })->count(),
+            'presente' => Asistencia::whereHas('inscripcion', function($q) use ($seccionId) {
+                $q->where('seccion_id', $seccionId);
+            })->where('estado', 'presente')->count(),
+            'tardanza' => Asistencia::whereHas('inscripcion', function($q) use ($seccionId) {
+                $q->where('seccion_id', $seccionId);
+            })->where('estado', 'tardanza')->count(),
+            'ausente' => Asistencia::whereHas('inscripcion', function($q) use ($seccionId) {
+                $q->where('seccion_id', $seccionId);
+            })->where('estado', 'ausente')->count(),
+        ];
+
+        return view('admin.asistencias.seccion', compact('seccion', 'estudiantes', 'fechasAsistencia', 'secciones', 'periodos', 'stats'));
     }
 
     /**
@@ -250,71 +286,71 @@ if ($request->filled('search')) {
      * Reporte de asistencias por sección
      */
     public function reporte(Request $request)
-{
-    $query = Asistencia::with(['inscripcion.estudiante', 'inscripcion.seccion']);
+    {
+        $query = Asistencia::with(['inscripcion.estudiante', 'inscripcion.seccion']);
 
-    $fechaInicio = $request->filled('fecha_inicio')
-        ? \Carbon\Carbon::parse($request->input('fecha_inicio'))->startOfDay()
-        : now()->startOfMonth();
+        $fechaInicio = $request->filled('fecha_inicio')
+            ? \Carbon\Carbon::parse($request->input('fecha_inicio'))->startOfDay()
+            : now()->startOfMonth();
 
-    $fechaFin = $request->filled('fecha_fin')
-        ? \Carbon\Carbon::parse($request->input('fecha_fin'))->endOfDay()
-        : now()->endOfMonth();
+        $fechaFin = $request->filled('fecha_fin')
+            ? \Carbon\Carbon::parse($request->input('fecha_fin'))->endOfDay()
+            : now()->endOfMonth();
 
-    $query->whereBetween('fecha', [$fechaInicio, $fechaFin]);
+        $query->whereBetween('fecha', [$fechaInicio, $fechaFin]);
 
-    if ($request->filled('estado')) {
-        $query->where('estado', $request->estado);
+        if ($request->filled('estado')) {
+            $query->where('estado', $request->estado);
+        }
+
+        // Obtener todas las asistencias
+        $asistencias = $query->get();
+
+        // Estadísticas generales
+        $totalAsistencias = $asistencias->count();
+        $presentes = $asistencias->where('estado', 'presente')->count();
+        $tardanzas = $asistencias->where('estado', 'tardanza')->count();
+        $ausentes = $asistencias->where('estado', 'ausente')->count();
+
+        // Calcular porcentajes
+        $porcentajePresentes = $totalAsistencias > 0 ? round(($presentes / $totalAsistencias) * 100, 2) : 0;
+        $porcentajeTardanzas = $totalAsistencias > 0 ? round(($tardanzas / $totalAsistencias) * 100, 2) : 0;
+        $porcentajeAusentes = $totalAsistencias > 0 ? round(($ausentes / $totalAsistencias) * 100, 2) : 0;
+
+        // Reporte por fecha
+        $reportePorFecha = $asistencias
+            ->groupBy(function($asistencia) {
+                return $asistencia->fecha->format('Y-m-d');
+            })
+            ->map(function($grupo, $fecha) {
+                $presentes = $grupo->where('estado', 'presente')->count();
+                $tardanzas = $grupo->where('estado', 'tardanza')->count();
+                $ausentes = $grupo->where('estado', 'ausente')->count();
+                $total = $grupo->count();
+                
+                $porcentaje = $total > 0 ? round((($presentes + $tardanzas) / $total) * 100, 2) : 0;
+
+                return (object)[
+                    'fecha' => \Carbon\Carbon::parse($fecha),
+                    'presentes' => $presentes,
+                    'tardanzas' => $tardanzas,
+                    'ausentes' => $ausentes,
+                    'total' => $total,
+                    'porcentaje_asistencia' => $porcentaje
+                ];
+            })
+            ->sortByDesc('fecha')
+            ->values();
+
+        return view('admin.asistencias.reporte', compact(
+            'totalAsistencias',
+            'presentes',
+            'tardanzas',
+            'ausentes',
+            'porcentajePresentes',
+            'porcentajeTardanzas',
+            'porcentajeAusentes',
+            'reportePorFecha'
+        ));
     }
-
-    // Obtener todas las asistencias
-    $asistencias = $query->get();
-
-    // Estadísticas generales
-    $totalAsistencias = $asistencias->count();
-    $presentes = $asistencias->where('estado', 'presente')->count();
-    $tardanzas = $asistencias->where('estado', 'tardanza')->count();
-    $ausentes = $asistencias->where('estado', 'ausente')->count();
-
-    // Calcular porcentajes
-    $porcentajePresentes = $totalAsistencias > 0 ? round(($presentes / $totalAsistencias) * 100, 2) : 0;
-    $porcentajeTardanzas = $totalAsistencias > 0 ? round(($tardanzas / $totalAsistencias) * 100, 2) : 0;
-    $porcentajeAusentes = $totalAsistencias > 0 ? round(($ausentes / $totalAsistencias) * 100, 2) : 0;
-
-    // Reporte por fecha
-    $reportePorFecha = $asistencias
-        ->groupBy(function($asistencia) {
-            return $asistencia->fecha->format('Y-m-d');
-        })
-        ->map(function($grupo, $fecha) {
-            $presentes = $grupo->where('estado', 'presente')->count();
-            $tardanzas = $grupo->where('estado', 'tardanza')->count();
-            $ausentes = $grupo->where('estado', 'ausente')->count();
-            $total = $grupo->count();
-            
-            $porcentaje = $total > 0 ? round((($presentes + $tardanzas) / $total) * 100, 2) : 0;
-
-            return (object)[
-                'fecha' => \Carbon\Carbon::parse($fecha),
-                'presentes' => $presentes,
-                'tardanzas' => $tardanzas,
-                'ausentes' => $ausentes,
-                'total' => $total,
-                'porcentaje_asistencia' => $porcentaje
-            ];
-        })
-        ->sortByDesc('fecha')
-        ->values();
-
-    return view('admin.asistencias.reporte', compact(
-        'totalAsistencias',
-        'presentes',
-        'tardanzas',
-        'ausentes',
-        'porcentajePresentes',
-        'porcentajeTardanzas',
-        'porcentajeAusentes',
-        'reportePorFecha'
-    ));
-}
 }

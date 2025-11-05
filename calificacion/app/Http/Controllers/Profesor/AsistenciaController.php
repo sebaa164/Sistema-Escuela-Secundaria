@@ -17,8 +17,7 @@ class AsistenciaController extends Controller
     {
         $this->middleware('auth');
         $this->middleware(function ($request, $next) {
-            $user = Auth::user();
-            if (!$user || ($user->tipo_usuario ?? null) !== 'profesor') {
+            if (Auth::user()->tipo_usuario !== 'profesor') {
                 abort(403, 'Acceso denegado.');
             }
             return $next($request);
