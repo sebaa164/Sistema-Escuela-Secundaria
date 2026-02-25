@@ -186,7 +186,7 @@
     <div class="login-container">
         <div class="login-header">
             <i class="fas fa-graduation-cap brand-icon"></i>
-            <h1>COLEGIO SECUNDARIO AUGUSTO PULENTA</h1>
+            <h1>I.E.S Normal Superior</h1>
             <p>SISTEMA DE CALIFICACIONES</p>
         </div>
         

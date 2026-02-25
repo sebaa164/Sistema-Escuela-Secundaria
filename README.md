@@ -1,64 +1,271 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Sistema de Gestión Académica - I.E.S Normal Superior
 
 <p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+    <img src="https://img.icons8.com/color/96/000000/school.png" alt="Sistema Educativo">
 </p>
 
-## About Laravel
+<p align="center">
+    <strong>Sistema Integral de Gestión Académica</strong><br>
+    Para Instituciones Educativas de Nivel Secundario
+</p>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Descripción Breve
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Sistema web completo para la gestión académica de instituciones educativas, desarrollado en Laravel 8. Permite administrar calificaciones, asistencias, inscripciones, reportes y seguimiento del rendimiento estudiantil. Cuenta con roles diferenciados para administradores, profesores y estudiantes, con interfaces optimizadas para cada perfil de usuario.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Características Principales
 
-## Learning Laravel
+- **Gestión de Usuarios**: Administración de estudiantes, profesores y tutores
+- **Control de Calificaciones**: Registro y seguimiento de notas por asignatura
+- **Sistema de Asistencias**: Control diario de presencia de estudiantes
+- **Inscripciones Online**: Gestión de inscripciones a cursos y secciones
+- **Reportes PDF**: Generación automática de boletines y estadísticas
+- **Dashboard Analítico**: Visualización de indicadores académicos
+- **Gestión de Períodos Académicos**: Configuración de ciclos lectivos
+- **Sistema de Evaluaciones**: Tipos variados de evaluaciones y porcentajes
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Credenciales de Acceso
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+**Administrador**
+- **Email**: `admin@sistema.edu`
+- **Password**: `password`
+- **Permisos**: Acceso completo a todas las funcionalidades del sistema
 
-## Laravel Sponsors
+**Profesor**
+- **Email**: `profesor@test.com`
+- **Password**: `password`
+- **Permisos**: Gestión de calificaciones, asistencias y reportes de sus asignaturas
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+**Estudiante**
+- **Email**: `estudiante@test.com`
+- **Password**: `password`
+- **Permisos**: Consulta de calificaciones, horarios y progreso académico
 
-### Premium Partners
+## Estructura de Carpetas
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+```
+sistema-escuela/
+├── app/
+│   ├── Console/              # Comandos de Artisan
+│   ├── Exceptions/           # Manejo de excepciones
+│   ├── Helpers/             # Funciones auxiliares
+│   ├── Http/
+│   │   ├── Controllers/     # Controladores MVC
+│   │   ├── Middleware/      # Middleware de autenticación
+│   │   └── Kernel.php       # Configuración de HTTP
+│   ├── Models/              # Modelos Eloquent
+│   └── Providers/           # Service Providers
+├── bootstrap/               # Archivos de inicialización
+├── config/                  # Configuración de la aplicación
+├── database/
+│   ├── factories/          # Factorias para datos de prueba
+│   ├── migrations/         # Migraciones de base de datos
+│   └── seeders/            # Datos iniciales
+├── public/                 # Archivos públicos (CSS, JS, imágenes)
+├── resources/
+│   ├── css/               # Hojas de estilo
+│   ├── js/                # Archivos JavaScript
+│   ├── lang/              # Archivos de idioma
+│   └── views/             # Plantillas Blade
+│       ├── admin/         # Vistas del panel administrativo
+│       ├── auth/          # Vistas de autenticación
+│       ├── estudiante/    # Vistas del portal estudiantil
+│       ├── profesor/      # Vistas del portal de profesores
+│       └── layouts/       # Plantillas base
+├── routes/                # Definición de rutas
+├── storage/               # Archivos generados por la aplicación
+├── tests/                 # Pruebas unitarias y de integración
+└── vendor/                # Dependencias de Composer
+```
 
-## Contributing
+## Dependencias Principales
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+**Framework y Core**
+- **Laravel 8.75**: Framework PHP principal
+- **PHP 7.3+**: Lenguaje de programación requerido
 
-## Code of Conduct
+**Paquetes Esenciales**
+- **barryvdh/laravel-dompdf**: Generación de documentos PDF
+- **doctrine/dbal**: Manipulación avanzada de base de datos
+- **fruitcake/laravel-cors**: Manejo de CORS
+- **guzzlehttp/guzzle**: Cliente HTTP
+- **laravel/sanctum**: Autenticación API
+- **laravel/tinker**: Consola interactiva
+- **phpoffice/phpspreadsheet**: Manipulación de archivos Excel
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+**Dependencias de Desarrollo**
+- **facade/ignition**: Depuración de errores
+- **fakerphp/faker**: Generación de datos falsos
+- **laravel/sail**: Entorno Docker
+- **mockery/mockery**: Framework de mocking
+- **nunomaduro/collision**: Manejo de errores en consola
+- **phpunit/phpunit**: Framework de testing
 
-## Security Vulnerabilities
+## Instalación y Configuración
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+**Requisitos Previos**
+- PHP >= 7.3
+- Composer
+- MySQL/MariaDB
+- Servidor web (Apache/Nginx)
 
-## License
+**Pasos de Instalación**
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+1. **Clonar el repositorio**
+   ```bash
+   git clone <repositorio-url>
+   cd sistema-escuela
+   ```
+
+2. **Instalar dependencias**
+   ```bash
+   composer install
+   npm install
+   ```
+
+3. **Configurar entorno**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+4. **Configurar base de datos**
+   ```env
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=calificacion
+   DB_USERNAME=root
+   DB_PASSWORD=
+   ```
+
+5. **Importar base de datos**
+   ```bash
+   mysql -u root -p calificacion < calificacion.sql
+   ```
+
+6. **Ejecutar seeders**
+   ```bash
+   php artisan db:seed
+   ```
+
+7. **Iniciar servidor**
+   ```bash
+   php artisan serve
+   ```
+
+8. **Compilar assets**
+   ```bash
+   npm run dev
+   ```
+
+## Base de Datos
+
+**Tablas Principales**
+- `usuarios`: Gestión de usuarios del sistema
+- `periodos_academicos`: Configuración de ciclos lectivos
+- `cursos`: Catálogo de asignaturas
+- `secciones`: Grupos y horarios de cursos
+- `inscripciones`: Registro de estudiantes en secciones
+- `calificaciones`: Notas de estudiantes
+- `asistencias`: Control de presencia
+- `evaluaciones`: Configuración de pruebas y trabajos
+- `configuraciones`: Parámetros del sistema
+
+## Interfaces de Usuario
+
+**Panel Administrativo**
+- Dashboard con estadísticas generales
+- Gestión completa de usuarios y cursos
+- Configuración del sistema
+- Reportes avanzados
+
+**Portal de Profesores**
+- Gestión de calificaciones por asignatura
+- Control de asistencias
+- Generación de reportes PDF
+- Visualización de estudiantes inscritos
+
+**Portal de Estudiantes**
+- Consulta de calificaciones
+- Visualización de horarios
+- Seguimiento del progreso académico
+- Descarga de boletines
+
+## Seguridad
+
+- Autenticación basada en sesiones
+- Encriptación de contraseñas con bcrypt
+- Middleware de protección CSRF
+- Validación de inputs del lado del servidor
+- Roles y permisos diferenciados
+
+## Reportes Disponibles
+
+- **Boletín de calificaciones** (PDF)
+- **Reporte de asistencias** (PDF)
+- **Listado de estudiantes** (PDF/Excel)
+- **Rendimiento académico** (PDF)
+- **Estadísticas generales** (Dashboard)
+
+## Tecnologías Utilizadas
+
+- **Backend**: Laravel 8, PHP 8
+- **Frontend**: Bootstrap 5, Font Awesome, JavaScript
+- **Base de Datos**: MySQL/MariaDB
+- **PDF Generation**: DomPDF
+- **Icons**: Font Awesome 6
+- **CSS Framework**: Bootstrap 5
+
+## Características Técnicas
+
+- **Responsive Design**: Adaptable a móviles y tablets
+- **Dark Mode**: Interfaz oscura opcional
+- **Real-time Updates**: Actualizaciones en tiempo real
+- **Export Options**: PDF y Excel
+- **Multi-language**: Soporte para español (extensible)
+
+## Mantenimiento
+
+**Comandos Útiles**
+```bash
+# Limpiar caché
+php artisan cache:clear
+php artisan config:clear
+php artisan view:clear
+
+# Optimizar aplicación
+php artisan config:cache
+php artisan route:cache
+
+# Ejecutar migraciones
+php artisan migrate:fresh --seed
+```
+
+## Notas de Desarrollo
+
+- El sistema utiliza el patrón MVC
+- Implementa Eloquent ORM para la gestión de datos
+- Usa Blade para las plantillas
+- Incluye middleware personalizados para autenticación
+- Implementa eventos y listeners para auditoría
+
+## Contribución
+
+1. Fork del proyecto
+2. Crear feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit de cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push al branch (`git push origin feature/AmazingFeature`)
+5. Abrir Pull Request
+
+## Licencia
+
+Este proyecto está licenciado bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para detalles.
+
+## Soporte
+
+Para soporte técnico o reporte de issues, contactar al equipo de desarrollo o crear un issue en el repositorio.
+
+---
+
+**Desarrollado con ❤️ para I.E.S Normal Superior**

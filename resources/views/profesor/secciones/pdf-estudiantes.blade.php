@@ -318,7 +318,7 @@
 
     <!-- Footer -->
     <div class="footer">
-        <p><strong>Colegio Secundario Augusto Pulenta</strong></p>
+        <p><strong>I.E.S Normal Superior</strong></p>
         <p>Reporte generado automáticamente - {{ \Carbon\Carbon::now()->format('d/m/Y H:i:s') }}</p>
         <p>Profesor: {{ auth()->user()->nombre_completo }}</p>
     </div>

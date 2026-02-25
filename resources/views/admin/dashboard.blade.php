@@ -13,7 +13,7 @@
                 <h1 class="header-title">
                     <i class="fas fa-chart-line me-3"></i>Panel de Control
                 </h1>
-                <p class="header-subtitle">Colegio Secundario Augusto Pulenta</p>
+                <p class="header-subtitle">I.E.S Normal Superior</p>
             </div>
             <div class="col-md-4 text-end">
                 @if($periodoActual)

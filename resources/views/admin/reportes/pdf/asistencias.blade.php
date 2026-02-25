@@ -212,7 +212,7 @@
     </table>
 
     <div class="footer">
-        Colegio Secundario Augusto Pulenta | Página <span class="page-number"></span>
+        I.E.S Normal Superior | Página <span class="page-number"></span>
     </div>
 </body>
 </html>

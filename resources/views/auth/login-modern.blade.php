@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Iniciar Sesión - Colegio Augusto Pulenta</title>
+    <title>Iniciar Sesión - I.E.S Normal Superior</title>
 
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
@@ -15,16 +15,18 @@
 
     <style>
         :root {
-            /* Colores institucionales */
-            --primary-red: #A31E39;
-            --primary-dark-red: #8B1538;
-            --accent-red: #C41E3A;
+            /* Colores neón azules */
+            --primary-blue: #00D4FF;
+            --primary-dark-blue: #0099CC;
+            --accent-blue: #00FFFF;
+            --neon-purple: #7B2FFF;
+            --neon-pink: #FF006E;
 
             /* Neutros nuevos */
-            --gray-900: #121212;
-            --gray-800: #1e1e1e;
-            --gray-700: #2c2c2c;
-            --gray-600: #3d3d3d;
+            --gray-900: #0a0a0a;
+            --gray-800: #1a1a1a;
+            --gray-700: #2a2a2a;
+            --gray-600: #3a3a3a;
             --gray-500: #555;
             --gray-400: #888;
             --gray-300: #b0b0b0;
@@ -32,9 +34,9 @@
             --gray-100: #e7e7e7;
 
             /* Fondos */
-            --bg-main: #f2f2f2;
-            --bg-soft: #ececec;
-            --bg-card: #f9f9f9;
+            --bg-main: #0f0f0f;
+            --bg-soft: #1a1a1a;
+            --bg-card: #2a2a2a;
         }
 
         * {
@@ -46,7 +48,7 @@
         body {
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
-            background: linear-gradient(135deg, var(--gray-800), var(--gray-700));
+            background: linear-gradient(135deg, var(--gray-900), var(--gray-800));
         }
 
         /* =============== LAYOUT PRINCIPAL =============== */
@@ -58,7 +60,7 @@
         /* =============== HERO SECTION (IZQUIERDA) =============== */
         .hero-section {
             flex: 1;
-            background: linear-gradient(135deg, var(--primary-dark-red) 0%, var(--primary-red) 50%, var(--accent-red) 100%);
+            background: linear-gradient(135deg, var(--primary-dark-blue) 0%, var(--primary-blue) 50%, var(--accent-blue) 100%);
             position: relative;
             overflow: hidden;
             display: flex;
@@ -66,15 +68,23 @@
             justify-content: center;
             padding: 4rem;
             color: white;
+            box-shadow: 0 0 50px rgba(0, 212, 255, 0.3);
         }
 
         .hero-pattern {
             position: absolute;
             inset: 0;
             background-image:
-                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
+                radial-gradient(circle at 20% 50%, rgba(0, 255, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(123, 47, 255, 0.15) 0%, transparent 50%),
+                linear-gradient(45deg, transparent 30%, rgba(0, 212, 255, 0.1) 50%, transparent 70%);
             pointer-events: none;
+            animation: neonPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes neonPulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
         }
 
         .hero-content {
@@ -93,13 +103,21 @@
         .hero-logo-icon {
             width: 60px;
             height: 60px;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(0, 255, 255, 0.2);
             backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 255, 255, 0.3);
             border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 2rem;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            animation: neonGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes neonGlow {
+            from { box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); }
+            to { box-shadow: 0 0 30px rgba(0, 255, 255, 0.8), 0 0 40px rgba(0, 212, 255, 0.4); }
         }
 
         .hero-logo-text h1 {
@@ -136,6 +154,7 @@
             font-weight: 800;
             line-height: 1.2;
             margin-bottom: 1.5rem;
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
         }
 
         .slide p {
@@ -155,21 +174,31 @@
             display: flex;
             align-items: center;
             gap: 1rem;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(0, 255, 255, 0.1);
             backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 255, 0.2);
             padding: 1rem 1.5rem;
             border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            background: rgba(0, 255, 255, 0.15);
+            border-color: rgba(0, 255, 255, 0.4);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
         }
 
         .feature-icon {
             width: 48px;
             height: 48px;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(0, 255, 255, 0.2);
+            border: 1px solid rgba(0, 255, 255, 0.3);
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
         }
 
         .feature-text h4 {
@@ -212,7 +241,8 @@
             flex-direction: column;
             justify-content: center;
             padding: 3rem;
-            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15);
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.3);
+            border-left: 1px solid rgba(0, 255, 255, 0.2);
         }
 
         .login-container {
@@ -221,7 +251,8 @@
             background: var(--bg-card);
             padding: 2.5rem 2rem;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(0, 255, 255, 0.1);
         }
 
         .login-header {
@@ -233,7 +264,8 @@
             font-family: 'Poppins', sans-serif;
             font-size: 1.75rem;
             font-weight: 700;
-            color: var(--gray-800);
+            color: var(--primary-blue);
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
         }
 
         .login-header p {
@@ -242,27 +274,28 @@
         }
 
         .form-label {
-            color: var(--gray-700);
+            color: var(--primary-blue);
             font-weight: 500;
             font-size: 0.875rem;
             margin-bottom: 0.5rem;
+            text-shadow: 0 0 5px rgba(0, 212, 255, 0.2);
         }
 
         .form-control-modern {
             width: 100%;
             padding: 0.875rem 1rem;
-            border: 2px solid var(--gray-200);
+            border: 2px solid rgba(0, 255, 255, 0.2);
             border-radius: 12px;
             font-size: 0.9375rem;
-            color: var(--gray-800);
+            color: #fff;
             background: var(--bg-soft);
             transition: all 0.3s ease;
         }
 
         .form-control-modern:focus {
-            border-color: var(--primary-red);
-            box-shadow: 0 0 0 4px rgba(163, 30, 57, 0.15);
-            background: #fff;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 4px rgba(0, 212, 255, 0.25);
+            background: rgba(0, 212, 255, 0.05);
         }
 
         .password-toggle {
@@ -276,8 +309,14 @@
             transform: translateY(-50%);
             border: none;
             background: none;
-            color: var(--gray-500);
+            color: var(--primary-blue);
             cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn:hover {
+            color: var(--accent-blue);
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
         }
 
         .btn-login {
@@ -285,16 +324,33 @@
             padding: 1rem;
             border: none;
             border-radius: 12px;
-            background: linear-gradient(135deg, var(--primary-dark-red), var(--primary-red));
+            background: linear-gradient(135deg, var(--primary-dark-blue), var(--primary-blue));
             color: white;
             font-weight: 600;
-            box-shadow: 0 4px 12px rgba(163, 30, 57, 0.25);
+            box-shadow: 0 4px 12px rgba(0, 212, 255, 0.25);
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
         .btn-login:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(163, 30, 57, 0.4);
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4), 0 0 30px rgba(0, 255, 255, 0.2);
+        }
+
+        .btn-login::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-login:hover::before {
+            left: 100%;
         }
 
         .alert-modern {
@@ -308,15 +364,15 @@
         }
 
         .alert-danger {
-            background: #f8d7da;
-            color: #842029;
-            border: 1px solid #f5c2c7;
+            background: rgba(255, 0, 110, 0.1);
+            color: var(--neon-pink);
+            border: 1px solid rgba(255, 0, 110, 0.3);
         }
 
         .alert-success {
-            background: #d1e7dd;
-            color: #0f5132;
-            border: 1px solid #badbcc;
+            background: rgba(0, 255, 255, 0.1);
+            color: var(--accent-blue);
+            border: 1px solid rgba(0, 255, 255, 0.3);
         }
 
         @media (max-width: 768px) {
@@ -336,7 +392,7 @@
                 <div class="hero-logo">
                     <div class="hero-logo-icon"><i class="fas fa-graduation-cap"></i></div>
                     <div class="hero-logo-text">
-                        <h1>Colegio Secundario<br>Augusto Pulenta</h1>
+                        <h1>I.E.S Normal<br>Superior</h1>
                         <p>Sistema de Gestión Académica</p>
                     </div>
                 </div>

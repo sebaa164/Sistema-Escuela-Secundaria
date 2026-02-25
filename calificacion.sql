@@ -818,8 +818,6 @@ CREATE TABLE IF NOT EXISTS `vista_estudiantes_activos` (
 -- (Véase abajo para la vista actual)
 --
 DROP VIEW IF EXISTS `vista_eventos_proximos`;
-CREATE TABLE IF NOT EXISTS `vista_eventos_proximos` (
-);
 
 -- --------------------------------------------------------
 
@@ -828,8 +826,6 @@ CREATE TABLE IF NOT EXISTS `vista_eventos_proximos` (
 -- (Véase abajo para la vista actual)
 --
 DROP VIEW IF EXISTS `vista_notas_por_estudiante`;
-CREATE TABLE IF NOT EXISTS `vista_notas_por_estudiante` (
-);
 
 -- --------------------------------------------------------
 
@@ -838,8 +834,6 @@ CREATE TABLE IF NOT EXISTS `vista_notas_por_estudiante` (
 -- (Véase abajo para la vista actual)
 --
 DROP VIEW IF EXISTS `vista_periodos_completa`;
-CREATE TABLE IF NOT EXISTS `vista_periodos_completa` (
-);
 
 -- --------------------------------------------------------
 
@@ -855,21 +849,15 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 
 --
 -- Estructura para la vista `vista_eventos_proximos`
+-- (Omitida temporalmente - requiere tabla periodo_eventos)
 --
-DROP TABLE IF EXISTS `vista_eventos_proximos`;
-
-DROP VIEW IF EXISTS `vista_eventos_proximos`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_eventos_proximos`  AS SELECT `pe`.`id` AS `id`, `pe`.`periodo_id` AS `periodo_id`, `pe`.`nombre` AS `nombre`, `pe`.`descripcion` AS `descripcion`, `pe`.`tipo_evento` AS `tipo_evento`, `pe`.`fecha_inicio` AS `fecha_inicio`, `pe`.`fecha_fin` AS `fecha_fin`, `pe`.`hora_inicio` AS `hora_inicio`, `pe`.`hora_fin` AS `hora_fin`, `pe`.`suspende_clases` AS `suspende_clases`, `pe`.`es_obligatorio` AS `es_obligatorio`, `pe`.`color` AS `color`, `pe`.`ubicacion` AS `ubicacion`, `pe`.`created_at` AS `created_at`, `pe`.`updated_at` AS `updated_at`, `p`.`nombre` AS `periodo_nombre`, `p`.`ciclo_escolar` AS `ciclo_escolar`, (to_days(`pe`.`fecha_inicio`) - to_days(curdate())) AS `dias_hasta_evento` FROM (`periodo_eventos` `pe` join `periodos_academicos` `p` on((`pe`.`periodo_id` = `p`.`id`))) WHERE (`pe`.`fecha_inicio` >= curdate()) ORDER BY `pe`.`fecha_inicio` ASC ;
 
 -- --------------------------------------------------------
 
 --
 -- Estructura para la vista `vista_notas_por_estudiante`
+-- (Omitida temporalmente - errores en columnas)
 --
-DROP TABLE IF EXISTS `vista_notas_por_estudiante`;
-
-DROP VIEW IF EXISTS `vista_notas_por_estudiante`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_notas_por_estudiante`  AS SELECT `u`.`id` AS `estudiante_id`, `u`.`nombre` AS `nombre`, `u`.`apellido` AS `apellido`, `u`.`email` AS `email`, `c`.`codigo_curso` AS `codigo_curso`, `c`.`nombre_curso` AS `curso`, `s`.`codigo_seccion` AS `codigo_seccion`, `pa`.`nombre` AS `periodo`, `pa`.`ciclo_escolar` AS `ciclo_escolar`, `i`.`nota_final` AS `nota_final`, `i`.`estado` AS `estado_inscripcion`, concat(`p`.`nombre`,' ',`p`.`apellido`) AS `profesor` FROM (((((`inscripciones` `i` join `usuarios` `u` on((`i`.`estudiante_id` = `u`.`id`))) join `secciones` `s` on((`i`.`seccion_id` = `s`.`id`))) join `cursos` `c` on((`s`.`curso_id` = `c`.`id`))) join `periodos_academicos` `pa` on((`s`.`periodo_id` = `pa`.`id`))) join `usuarios` `p` on((`s`.`profesor_id` = `p`.`id`))) WHERE (`u`.`tipo_usuario` = 'estudiante') ;
 
 -- --------------------------------------------------------
 
@@ -879,7 +867,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 DROP TABLE IF EXISTS `vista_periodos_completa`;
 
 DROP VIEW IF EXISTS `vista_periodos_completa`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_periodos_completa`  AS SELECT `p`.`id` AS `id`, `p`.`nombre` AS `nombre`, `p`.`codigo` AS `codigo`, `p`.`ciclo_escolar` AS `ciclo_escolar`, `p`.`año_academico` AS `año_academico`, `p`.`periodo_tipo` AS `periodo_tipo`, `p`.`numero_periodo` AS `numero_periodo`, `p`.`fecha_inicio` AS `fecha_inicio`, `p`.`fecha_fin` AS `fecha_fin`, `p`.`fecha_inicio_inscripciones` AS `fecha_inicio_inscripciones`, `p`.`fecha_fin_inscripciones` AS `fecha_fin_inscripciones`, `p`.`fecha_inicio_clases` AS `fecha_inicio_clases`, `p`.`fecha_fin_clases` AS `fecha_fin_clases`, `p`.`fecha_inicio_examenes` AS `fecha_inicio_examenes`, `p`.`fecha_fin_examenes` AS `fecha_fin_examenes`, `p`.`fecha_entrega_notas` AS `fecha_entrega_notas`, `p`.`dias_habiles` AS `dias_habiles`, `p`.`total_semanas` AS `total_semanas`, `p`.`vacaciones` AS `vacaciones`, `p`.`fechas_especiales` AS `fechas_especiales`, `p`.`descripcion` AS `descripcion`, `p`.`observaciones` AS `observaciones`, `p`.`permite_inscripciones` AS `permite_inscripciones`, `p`.`permite_modificar_notas` AS `permite_modificar_notas`, `p`.`requiere_asistencia` AS `requiere_asistencia`, `p`.`estado` AS `estado`, `p`.`created_at` AS `created_at`, `p`.`updated_at` AS `updated_at`, (to_days(`p`.`fecha_fin`) - to_days(`p`.`fecha_inicio`)) AS `duracion_total_dias`, (case when (`p`.`fecha_fin` < curdate()) then 0 else (to_days(`p`.`fecha_fin`) - to_days(curdate())) end) AS `dias_restantes`, (case when (`p`.`fecha_inicio` > curdate()) then 0 else (to_days(curdate()) - to_days(`p`.`fecha_inicio`)) end) AS `dias_transcurridos`, (case when ((curdate() between `p`.`fecha_inicio` and `p`.`fecha_fin`) and (`p`.`estado` = 'activo')) then true else false end) AS `es_vigente`, count(distinct `s`.`id`) AS `total_secciones`, count(distinct `s`.`curso_id`) AS `total_cursos`, count(distinct `i`.`estudiante_id`) AS `total_estudiantes` FROM ((`periodos_academicos` `p` left join `secciones` `s` on((`p`.`id` = `s`.`periodo_id`))) left join `inscripciones` `i` on(((`s`.`id` = `i`.`seccion_id`) and (`i`.`estado` = 'inscrito')))) GROUP BY `p`.`id` ;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
